@@ -1,0 +1,89 @@
+* {
+  /* 改变盒模型 */
+  box-sizing: border-box;
+  /* 所有的内边距 外边距都不要，设置为0 */
+  padding: 0;
+  margin: 0;
+}
+/* 容器 用于居中位置 */
+.wrapper {
+  background: white;
+  /* 这里用height：100%不会有效果
+    vh——>viewpoint height 用户的可视范围
+    100份的可视范围就是用户看见的整个页面范围
+     */
+  /* 
+    把高度设定为整个页面，则居中时，上下左右都会居中
+    如果不设定高度，则只会左右居中，上下不会居中，还是顶着最最上面
+    */
+  height: 100vh;
+
+  /* flex布局-居中 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 让div之间竖着排列，因为flex布局默认是横着排列的 */
+  flex-direction: column;
+}
+
+/* 太极div */
+.container {
+  width: 240px;
+  height: 240px;
+  /* 上 右 下 左 */
+  /* 通过将下边的border设置为120px,获得和上部分一样大小的黑色区域 */
+  border-width: 2px 2px 120px 2px;
+  border-style: solid;
+  border-color: black;
+  border-radius: 50%;
+  position: relative;
+  /* 绑定动画 */
+  /* 动画开始到结束为2s 线性过渡更平滑的变换 循环播放 */
+  animation: taiji 2s linear infinite;
+}
+/* 用为元素插入太极的两个小圆 */
+.container::before,
+.container::after {
+  content: "";
+  width: 28px;
+  height: 28px;
+  /* 用绝对定位让小圆对齐位置 */
+  position: absolute;
+  top: 50%;
+  background: black;
+  border-radius: 50%;
+  /* 这里需要注意:全局设置了box-sizing: border-box;但是对于::after这种里面没有效果,跟没有设置一样 */
+  border: 45px solid #fff;
+  /* 这里使用45px而不是46px是因为外边框左右各设置了2px的宽度,会导致里面的小圆看起来不平滑,
+要么删除外边框,要么缩小里面每个小圆2px的边框距离,共4px
+*/
+  /* 45x2+28=118px----->大圆的一半 */
+
+  /* 手动加上box-sizing: border-box 也能达到一样的效果*/
+  /* box-sizing: border-box;
+    width: 120px;
+    height: 120px;
+    border: 45px solid #fff; */
+}
+/* 让重叠在一起的before和after分开,after向右移动一半 */
+.container::after {
+  left: 50%;
+  background: #fff;
+  border: 46px solid black;
+}
+
+/* 利用帧动画让太极转动起来 */
+@keyframes taiji {
+  0% {
+    /* 开始时太极旋转角度为0 */
+    transform: rotate(0deg);
+  }
+  100% {
+    /* 结束时太极旋转角度为360 */
+    transform: rotate(360deg);
+  }
+}
+p {
+  font-size: 80px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
